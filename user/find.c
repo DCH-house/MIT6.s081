@@ -1,6 +1,7 @@
 #include "kernel/types.h"
-#include "user/user.h"
 #include "kernel/stat.h"
+#include "user/user.h"
+#include "kernel/fs.h"
 
 //Write a simple version of the UNIX find program: find all the files in a directory tree with a specific name.
 // Look at user/ls.c to see how to read directories.
