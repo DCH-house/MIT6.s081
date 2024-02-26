@@ -32,13 +32,13 @@ fmtname(char *path)
 }
 
 void
-ls(char *path)
+ls(char *path, char *target)
 {
   char buf[512], *p;
   int fd;
   struct dirent de;
   struct stat st;
-
+  //check if this file can be poened
   if((fd = open(path, 0)) < 0){
     fprintf(2, "ls: cannot open %s\n", path);
     return;
@@ -49,13 +49,13 @@ ls(char *path)
     close(fd);
     return;
   }
-
+  //printf("st.type = %d\n",st.type);
   switch(st.type){
-  case T_FILE:
-    printf("%s %d %d %l\n", fmtname(path), st.type, st.ino, st.size);
+  case T_FILE://a file type
+    printf("fmtname:%s path: %s %d %d %l\n", fmtname(path), path, st.type, st.ino, st.size);
     break;
 
-  case T_DIR:
+  case T_DIR://a directory type
     if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
       printf("ls: path too long\n");
       break;
@@ -84,11 +84,16 @@ main(int argc, char *argv[])
 {
   int i;
 
-  if(argc < 2){
-    ls(".");
+  if(argc == 1 || argc > 3){
+    printf("find (directory) target!");
+    exit(1);
+  }
+  if(argc == 2){
+    ls(".",argv[0]);
     exit(0);
   }
-  for(i=1; i<argc; i++)
-    ls(argv[i]);
-  exit(0);
+  if(argc == 3){
+    ls(argv[0],argv[1]);
+  }
+
 }
